@@ -29,7 +29,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     return AnimatedContainer(
       transform: Matrix4.translationValues(xOffset, yOffset, zOffset)..scale(scaleFactor),
       duration: Duration(milliseconds: 250),
-      color: Colors.white,
+
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+      ),
       child: Column(
         children: [
           SizedBox(height: 35,),
