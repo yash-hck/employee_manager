@@ -1,5 +1,13 @@
+import 'package:employeemanager/screens/attendenceScreen.dart';
+import 'package:employeemanager/screens/dashboardScreen.dart';
+import 'package:employeemanager/screens/employeesScreen.dart';
+import 'package:employeemanager/screens/login.dart';
+import 'package:employeemanager/screens/paymentsScreen.dart';
+import 'package:employeemanager/screens/profileScreen.dart';
+import 'package:employeemanager/screens/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerScreen extends StatelessWidget {
   @override
@@ -44,7 +52,11 @@ class DrawerScreen extends StatelessWidget {
             child: ListView(
 
               children: [
+
                 ListTile(
+                  onTap: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashBoardScreen()));
+                  },
                   leading: Icon(Icons.dashboard,color: Colors.white,),
                   title: Text('Dashboard',
                   style: TextStyle(
@@ -52,6 +64,9 @@ class DrawerScreen extends StatelessWidget {
                   ),),
                 ),
                 ListTile(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeesScreen()));
+                  },
                   leading: Icon(FontAwesomeIcons.building,color: Colors.white,),
                   title: Text('My Employees',
                     style: TextStyle(
@@ -59,6 +74,9 @@ class DrawerScreen extends StatelessWidget {
                     ),),
                 ),
                 ListTile(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentsScreen()));
+                  },
                   leading: Icon(Icons.money,color: Colors.white,),
                   title: Text('Payments',
                     style: TextStyle(
@@ -66,6 +84,9 @@ class DrawerScreen extends StatelessWidget {
                     ),),
                 ),
                 ListTile(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AttendenceScreen()));
+                  },
                   leading: Icon(FontAwesomeIcons.database,color: Colors.white,),
                   title: Text('Attendence',
                     style: TextStyle(
@@ -73,6 +94,9 @@ class DrawerScreen extends StatelessWidget {
                     ),),
                 ),
                 ListTile(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+                  },
                   leading: Icon(Icons.person_outline,color: Colors.white,),
                   title: Text('Profile',
                     style: TextStyle(
@@ -80,6 +104,9 @@ class DrawerScreen extends StatelessWidget {
                     ),),
                 ),
                 ListTile(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+                  },
                   leading: Icon(Icons.settings,color: Colors.white,),
                   title: Text('Settings',
                     style: TextStyle(
@@ -87,6 +114,10 @@ class DrawerScreen extends StatelessWidget {
                     ),),
                 ),
                 ListTile(
+                  onTap: (){
+                    removeData();
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginScreen()),(Route<dynamic> route) => false);
+                  },
                   leading: Icon(Icons.logout,color: Colors.white,),
                   title: Text('LogOut',
                     style: TextStyle(
@@ -101,4 +132,12 @@ class DrawerScreen extends StatelessWidget {
       ),
     );
   }
+
+  void removeData() async{
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+
+  }
+
 }

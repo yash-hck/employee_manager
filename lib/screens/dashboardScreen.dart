@@ -52,7 +52,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         xOffset = drawerFlag?0:230;
                         zOffset = drawerFlag?0:50;
                         yOffset = drawerFlag?0:150;
-                        scaleFactor = drawerFlag?1:0.6;
+                        scaleFactor = drawerFlag?1:0.7;
                         drawerFlag = !drawerFlag;
                       });
                     }

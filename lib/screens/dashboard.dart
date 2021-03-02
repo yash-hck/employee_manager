@@ -32,6 +32,12 @@ class _DashBoardState extends State<DashBoard> {
 
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
