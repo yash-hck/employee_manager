@@ -15,6 +15,8 @@ void main() async{
     if(storedObject != null && storedObject.isNotEmpty){
       Manager manager = Manager.blank();
       manager.documentId = jsonId;
+      manager.email = prefs.getString('email');
+      manager.name = prefs.getString('name');
       return runApp(MyApp(logs: true, manager: manager,));
     }
     else {

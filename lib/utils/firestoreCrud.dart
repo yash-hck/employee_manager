@@ -74,6 +74,8 @@ class FirestoreCRUD{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('jsonId', manager.documentId);
     prefs.setString('storedObject', json.encode(manager.toMap()));
+    prefs.setString('email', manager.email);
+    prefs.setString('name', manager.name);
 
   }
 

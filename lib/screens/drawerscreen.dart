@@ -1,3 +1,4 @@
+import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/screens/attendenceScreen.dart';
 import 'package:employeemanager/screens/dashboardScreen.dart';
 import 'package:employeemanager/screens/employeesScreen.dart';
@@ -10,6 +11,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerScreen extends StatelessWidget {
+
+  final Manager manager;
+
+
+  DrawerScreen({this.manager});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,8 +48,8 @@ class DrawerScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Yash Verma',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),),
-                  Text('Active Status',style: TextStyle(color: Colors.white,))
+                  Text(manager.name,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),),
+                  Text(manager.email,style: TextStyle(color: Colors.white,))
                 ],
               )
 

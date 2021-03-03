@@ -1,5 +1,5 @@
 class Employee{
-  int _employee_id;
+  //int _employee_id;
   String _name;
   String _dob;
   String _dateJoined;
@@ -8,7 +8,9 @@ class Employee{
   String _document_id;
   String _managerDocumentId;
 
-  Employee(this._employee_id, this._name, this._dob, this._dateJoined,
+  Employee.blank();
+
+  Employee( this._name, this._dob, this._dateJoined,
       this._email, this._mob);
 
 
@@ -56,16 +58,12 @@ class Employee{
     _name = value;
   }
 
-  int get employee_id => _employee_id;
 
-  set employee_id(int value) {
-    _employee_id = value;
-  }
 
   Map<String, dynamic> toMap(){
     var map = Map<String , dynamic> ();
 
-    map['employee_id'] = this.employee_id;
+    //map['employee_id'] = this.employee_id;
     map['name'] = this._name;
     map['dob'] = this.dob;
     map['dateJoined'] = this._dateJoined;
@@ -80,7 +78,7 @@ class Employee{
 
   Employee.fromMapObject(Map<String,dynamic> map){
     this._name = map['name'];
-    this.employee_id = map['employee_id'];
+    //this.employee_id = map['employee_id'];
     this.dob = map['dob'];
     this._dateJoined =  map['dateJoined'];
     this._email = map['email'];

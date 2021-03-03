@@ -1,4 +1,5 @@
 import 'package:employeemanager/models/manager.dart';
+import 'package:employeemanager/screens/addEmployee.dart';
 import 'package:employeemanager/screens/dashboardScreen.dart';
 import 'package:employeemanager/screens/drawerscreen.dart';
 import 'package:flutter/material.dart';
@@ -27,17 +28,17 @@ class _DashBoardState extends State<DashBoard> {
 
       body: Stack(
         children: [
-          DrawerScreen(),
+          DrawerScreen(manager: incoming,),
           DashBoardScreen(incoming: incoming,)
 
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: (){
-
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployee()));
         },
         child: Icon(Icons.add),
-      ),
+      ),*/
     );
   }
 }
