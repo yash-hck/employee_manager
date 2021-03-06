@@ -27,7 +27,10 @@ dependencies:
   cloud_firestore: ^0.16.0+1
   font_awesome_flutter: ^8.11.0
   shared_preferences: ^0.5.12+2
-
+  flutter_email_sender: ^4.0.0
+  mailer: ^3.2.1
+  flutter_mailer: ^1.0.1
+  flutter_typeahead: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

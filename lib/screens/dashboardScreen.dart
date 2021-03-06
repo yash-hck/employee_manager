@@ -1,5 +1,6 @@
 import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/screens/addEmployee.dart';
+import 'package:employeemanager/screens/makeAnnouncement.dart';
 import 'package:employeemanager/utils/configs.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -147,7 +148,7 @@ class Tile extends StatelessWidget {
   final String imagePath;
   final int index;
   final String title;
-  List<Widget> screens = [AddEmployee(),AddEmployee(),AddEmployee(),AddEmployee()];
+  List<Widget> screens = [AddEmployee(),AddEmployee(),AddEmployee(),AnnouncementScreen()];
 
 
 

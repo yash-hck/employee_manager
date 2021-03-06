@@ -1,7 +1,7 @@
 class Employee{
   //int _employee_id;
   String _name;
-  String _dob;
+  //String _dob;
   String _dateJoined;
   String _email;
   String _mob;
@@ -10,7 +10,7 @@ class Employee{
 
   Employee.blank();
 
-  Employee( this._name, this._dob, this._dateJoined,
+  Employee( this._name,  this._dateJoined,
       this._email, this._mob);
 
 
@@ -46,11 +46,6 @@ class Employee{
     _dateJoined = value;
   }
 
-  String get dob => _dob;
-
-  set dob(String value) {
-    _dob = value;
-  }
 
   String get name => _name;
 
@@ -65,7 +60,7 @@ class Employee{
 
     //map['employee_id'] = this.employee_id;
     map['name'] = this._name;
-    map['dob'] = this.dob;
+    //map['dob'] = this.dob;
     map['dateJoined'] = this._dateJoined;
     map['email'] = this._email;
     map['mob'] = this._mob;
@@ -79,7 +74,7 @@ class Employee{
   Employee.fromMapObject(Map<String,dynamic> map){
     this._name = map['name'];
     //this.employee_id = map['employee_id'];
-    this.dob = map['dob'];
+    //this.dob = map['dob'];
     this._dateJoined =  map['dateJoined'];
     this._email = map['email'];
     this._mob = map['mob'];

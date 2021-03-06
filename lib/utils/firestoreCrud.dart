@@ -1,9 +1,12 @@
 
 import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/screens/dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirestoreCRUD{
@@ -68,6 +71,50 @@ class FirestoreCRUD{
 
     return logged;
   }
+
+  static Future<bool> addEmployee(BuildContext context,Employee employee) async{
+
+    int length = 0;
+   print(employee.managerDocumentId);
+    await FirebaseFirestore.instance.collection('managers')
+        .doc(employee.managerDocumentId)
+        .collection('employees').where('email',isEqualTo: employee.email)
+        .get().then((QuerySnapshot querySnampshot){
+          length = querySnampshot.docs.length;
+    });
+
+    if(length > 0){
+      print('length issue');
+      return false;
+    }
+    employee.dateJoined = DateTime.now().toString();
+    await FirebaseFirestore.instance.collection('managers')
+      .doc(employee.managerDocumentId)
+    .collection('employees')
+    .add(employee.toMap());
+
+    Navigator.of(context).pop();
+
+    return true;
+
+  }
+  
+  static Future<List<String>> fetchRecipents()async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    
+    String jsonId = preferences.getString('jsonId');
+    List<String > recipents = [];
+    await FirebaseFirestore.instance.collection('managers').doc(jsonId).collection('employees')
+    .get().then((QuerySnapshot querySnapshot) => {
+      querySnapshot.docs.forEach((doc) {
+        print(doc['email'].toString());
+        recipents.add(doc["email"]);
+      })
+    });
+
+    return recipents;
+  }
+
 
   static void storeData(Manager manager) async {
 
