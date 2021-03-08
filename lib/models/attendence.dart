@@ -1,11 +1,17 @@
 class Attendence{
   String _date;
   int _overtime;
-  String _documetId;
+  bool _fullDay;
 
 
-  Attendence(this._date, this._overtime);
+  Attendence(this._date, this._overtime,this._fullDay);
 
+
+  bool get fullDay => _fullDay;
+
+  set fullDay(bool value) {
+    _fullDay = value;
+  }
 
   String get date => _date;
 
@@ -18,6 +24,7 @@ class Attendence{
 
     map['date'] = this._date;
     map['overtime'] = this._overtime;
+    map['fullday'] = this._fullDay;
 
     return map;
 
@@ -26,6 +33,7 @@ class Attendence{
   Attendence.fromMapObject(Map<String ,dynamic> map){
     this._date = map['date'];
     this._overtime = map['overtime'];
+    this._fullDay = map['fullday'];
   }
 
   int get overtime => _overtime;

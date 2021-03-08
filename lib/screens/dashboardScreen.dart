@@ -1,5 +1,6 @@
 import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/screens/addEmployee.dart';
+import 'package:employeemanager/screens/addPaymentScreen.dart';
 import 'package:employeemanager/screens/makeAnnouncement.dart';
 import 'package:employeemanager/utils/configs.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     imagePath: menuImage[index],
                     title: dashmenu[index],
                     index: index,
+                    manager: incoming,
                   );
               }
               /*children: [
@@ -145,14 +147,25 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
 class Tile extends StatelessWidget {
 
+  final Manager manager;
+
   final String imagePath;
   final int index;
   final String title;
-  List<Widget> screens = [AddEmployee(),AddEmployee(),AddEmployee(),AnnouncementScreen()];
+  Manager incoming;
+  List<Widget> screens = [];
+
+  Tile({this.imagePath, this.index, this.title,this.manager}){
+    incoming = manager;
+    screens = [AddEmployee(),AddPayments(manager: incoming),AddEmployee(),AnnouncementScreen()];
+  }
 
 
 
-  Tile({this.imagePath, this.index, this.title});
+
+
+
+
 
   @override
   Widget build(BuildContext context) {

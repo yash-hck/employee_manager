@@ -72,7 +72,7 @@ class DrawerScreen extends StatelessWidget {
                 ),
                 ListTile(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeesScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeesScreen(manager: manager,)));
                   },
                   leading: Icon(FontAwesomeIcons.building,color: Colors.white,),
                   title: Text('My Employees',

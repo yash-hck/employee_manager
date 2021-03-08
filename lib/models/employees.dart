@@ -1,3 +1,7 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class Employee{
   //int _employee_id;
   String _name;
@@ -80,6 +84,13 @@ class Employee{
     this._mob = map['mob'];
     //this._document_id = map['documentId'];
     //this._managerDocumentId = map['managerDocumentId'];
+  }
+
+  Employee.fromQurrySnapshot(QueryDocumentSnapshot data){
+    this.name = data['name'];
+    this.email = data['email'];
+    this.mob = data['mob'];
+    this.dateJoined = data['dateJoined'];
   }
 
 }

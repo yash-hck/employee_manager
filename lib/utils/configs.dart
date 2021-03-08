@@ -7,3 +7,6 @@ List<BoxShadow> shadowList = [
 
 List<String> dashmenu = ['Add Employees','Add Payment','Add Attendence','Make Annponcement'];
 List<String> menuImage = ['images/adds.png','images/rup.png','images/atten.png','images/announ.png'];
+
+final String MANAGER_COLLECTION = 'managers';
+final String EMPLOYEES_COLLECTION = 'employees';
