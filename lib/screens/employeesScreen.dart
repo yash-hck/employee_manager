@@ -23,6 +23,7 @@ class EmployeesScreen extends StatefulWidget {
 class _EmployeesScreenState extends State<EmployeesScreen> {
 
   final Manager manager;
+  String sorted = 'date';
 
 
   String query;
@@ -61,7 +62,9 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
           builder: (context, snapshot) {
             return (snapshot.connectionState == ConnectionState.waiting)?
             Center(child: CircularProgressIndicator(),) :
+                
             ListView.builder(
+              shrinkWrap: true,
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 DocumentSnapshot data = snapshot.data.docs[index];

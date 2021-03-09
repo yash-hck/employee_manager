@@ -164,6 +164,8 @@ class FirestoreCRUD{
     }
 
 
-
+  static getDetailForEmployee(Employee employee) async{
+    
+  }
 
 }

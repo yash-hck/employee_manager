@@ -1,4 +1,5 @@
 import 'package:employeemanager/models/manager.dart';
+import 'package:employeemanager/screens/addAttendenceScreen.dart';
 import 'package:employeemanager/screens/addEmployee.dart';
 import 'package:employeemanager/screens/addPaymentScreen.dart';
 import 'package:employeemanager/screens/makeAnnouncement.dart';
@@ -157,7 +158,7 @@ class Tile extends StatelessWidget {
 
   Tile({this.imagePath, this.index, this.title,this.manager}){
     incoming = manager;
-    screens = [AddEmployee(),AddPayments(manager: incoming),AddEmployee(),AnnouncementScreen()];
+    screens = [AddEmployee(),AddPayments(manager: incoming),AddAttendence(manager: manager,),AnnouncementScreen()];
   }
 
 

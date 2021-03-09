@@ -82,7 +82,7 @@ class DrawerScreen extends StatelessWidget {
                 ),
                 ListTile(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentsScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentsScreen(manager: manager,)));
                   },
                   leading: Icon(Icons.money,color: Colors.white,),
                   title: Text('Payments',
