@@ -10,12 +10,14 @@ class Employee{
   String _email;
   String _mob;
   String _document_id;
+  double _wages;
   String _managerDocumentId;
-
+  //String _scheme;
   Employee.blank();
 
   Employee( this._name,  this._dateJoined,
-      this._email, this._mob);
+      this._email,this._wages , this._mob);
+
 
 
   String get managerDocumentId => _managerDocumentId;
@@ -30,6 +32,12 @@ class Employee{
     _document_id = value;
   }
 
+
+  double get wages => _wages;
+
+  set wages(double value) {
+    _wages = value;
+  }
 
   String get mob => _mob;
 
@@ -67,7 +75,9 @@ class Employee{
     //map['dob'] = this.dob;
     map['dateJoined'] = this._dateJoined;
     map['email'] = this._email;
+    map['wages'] = this._wages;
     map['mob'] = this._mob;
+    //map['scheme'] = this._scheme;
     //map['documentId'] = this._document_id;
     //map['managerDocumentId'] = this._managerDocumentId;
 
@@ -77,11 +87,13 @@ class Employee{
 
   Employee.fromMapObject(Map<String,dynamic> map){
     this._name = map['name'];
+    this._wages = map['wages'];
     //this.employee_id = map['employee_id'];
     //this.dob = map['dob'];
     this._dateJoined =  map['dateJoined'];
     this._email = map['email'];
     this._mob = map['mob'];
+    //this._scheme = map['scheme'];
     //this._document_id = map['documentId'];
     //this._managerDocumentId = map['managerDocumentId'];
   }
@@ -89,6 +101,7 @@ class Employee{
   Employee.fromQurrySnapshot(QueryDocumentSnapshot data){
     this.name = data['name'];
     this.email = data['email'];
+    this._wages = data['wages'];
     this.mob = data['mob'];
     this.dateJoined = data['dateJoined'];
   }

@@ -3,8 +3,15 @@ class Payments{
   String _method;
   String _amount;
   String _recipent;
+  String _recipentName;
 
-  Payments(this._date, this._method, this._amount, this._recipent);
+  String get recipentName => _recipentName;
+
+  set recipentName(String value) {
+    _recipentName = value;
+  }
+
+  Payments(this._date, this._method, this._amount, this._recipent,this._recipentName);
 
   Payments.blank();
   String get recipent => _recipent;
@@ -39,6 +46,7 @@ class Payments{
     map['method'] = this.method;
     map['amount'] = this._amount;
     map['recipent'] = this.recipent;
+    map['recipentName'] = this._recipentName;
     //map['documentId'] = this._documentId;
 
     return map;
@@ -50,6 +58,7 @@ class Payments{
     this._date = map['date'];
     this._amount = map['method'];
     this._method = map['amount'];
+    this._recipentName  = map['recipentName'];
     this.recipent = map['recipent'];
     //this._documentId = map['documentId'];
   }

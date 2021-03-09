@@ -16,6 +16,7 @@ class Attendence{
   String get date => _date;
 
   set date(String value) {
+
     _date = value;
   }
 

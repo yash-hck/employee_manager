@@ -1,7 +1,9 @@
+
 import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/utils/firestoreCrud.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddEmployee extends StatefulWidget {
@@ -14,9 +16,13 @@ class _AddEmployeeState extends State<AddEmployee> {
   final formKey = GlobalKey<FormState>();
   String jsonId;
   Employee employee = Employee.blank();
+  int wageInd = 0;
+  String dropDownVal = 'per Day';
+  TextEditingController wageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Employee',style:
@@ -138,6 +144,73 @@ class _AddEmployeeState extends State<AddEmployee> {
                       return null;
                     },
                   ),
+                  SizedBox(height: 15,),
+                  Row(
+                    children: [
+
+
+                      Expanded(
+                        flex: 3,
+                        child: TextFormField(
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold
+                          ),
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey[300],
+                                      width: 2,
+                                      style: BorderStyle.solid
+                                  )
+                              ),
+                              hintText: 'wages',
+                              prefixIcon: Icon(FontAwesomeIcons.piggyBank),
+                              hintStyle: TextStyle(
+
+                                  fontSize: 20
+                              )
+                          ),
+                          controller: wageController,
+
+                          onSaved: (value){
+                            employee.wages = double.parse(value);
+                          },
+
+                          validator: (value){
+                            if(value.length <0 )
+                              return 'Phone Number Length must be 10 digits';
+                            return null;
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 20 ,),
+                      Expanded(
+                        flex: 2,
+                        child: DropdownButton(
+
+                          value: dropDownVal,
+                          items: [
+                            'per Day','per Month'
+                          ].map((String e){
+                            return DropdownMenuItem(
+                                child: Text(e),
+                                value: e
+                            );
+                          }).toList(),
+                          onChanged: (String val){
+                            setState(() {
+
+                              dropDownVal = val;
+
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                   _buildAddBtn()
                 ],
               ),
@@ -181,10 +254,23 @@ class _AddEmployeeState extends State<AddEmployee> {
 
     await initialiseId();
     
+
     if(formKey.currentState.validate()){
       employee.managerDocumentId = jsonId;
 
       formKey.currentState.save();
+
+      employee.wages = double.parse(wageController.text);
+      print('wages ' + employee.wages.toString());
+      if(dropDownVal != 'per Day'){
+        employee.wages = (employee.wages/30).roundToDouble();
+        print(employee.wages);
+        /*double res = employee.wages;
+      res = res/30;
+      employee.wages = res.toDouble();*/
+      }
+      //print('scheme' + employee.wages.toString());
+
       print(employee.managerDocumentId);
       FirestoreCRUD.addEmployee(context, employee).then((value){
         if(value){

@@ -149,25 +149,13 @@ class FirestoreCRUD{
 
     print('email' + employee.email);
     payments.recipent = employee.email;
-
-    var data = await FirebaseFirestore.instance.collection(MANAGER_COLLECTION).doc(manager.documentId)
-        .collection(EMPLOYEES_COLLECTION)
-        .where('email',isEqualTo: employee.email).get();
-
-    print('length => '+ data.docs.length.toString());
-
-    if(data.docs.length >1)return false;
-
-    var result = await data.docs[0].id;
-    print(result.toString());
+    payments.recipentName = employee.name;
+    
     try{
       await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
           .doc(manager.documentId)
-          .collection(EMPLOYEES_COLLECTION)
-          .doc(result)
           .collection('payments')
           .add(payments.toMap());
-
       }
       catch(e){
       print(e.toString());

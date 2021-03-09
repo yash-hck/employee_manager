@@ -171,7 +171,8 @@ class _AddPaymentsState extends State<AddPayments> {
               onPressed: () {
                 addPay(result);
               },
-              child: isLoading?CircularProgressIndicator(): Text(
+              child: isLoading?CircularProgressIndicator():
+              Text(
                 "SAVE",
 
                 style: TextStyle(
