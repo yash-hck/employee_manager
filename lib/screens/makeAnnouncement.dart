@@ -16,7 +16,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
   String username = 'yash7830verma@gmail.com';
   String password = 'Yashverma@123';
-
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -41,7 +41,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         ],
 
       ),
-      body: Container(
+      body:isLoading?CircularProgressIndicator(semanticsLabel: 'Sending Email',):
+      Container(
         padding: EdgeInsets.all(12),
         child: Column(
           children: [
@@ -103,10 +104,21 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
     await fetchRecipentsList();
     print(recipents.toString());
+    await finalSend('anonymous18881@yahoo.com', bodyController.text);
+    setState(() {
+      isLoading = true;
+    });
 
-    for(String x in recipents){
+
+    /*for(String x in recipents){
+
       await finalSend(x, bodyController.text);
-    }
+    }*/
+
+
+    setState(() {
+      isLoading = false;
+    });
 
 
    /* final MailOptions mailOptions = MailOptions(
@@ -158,7 +170,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
     print('Response status: ${response.statusCode}');
 
+    if(response.statusCode == 200 || response.statusCode == 202)return true;
+
     print('Response body: ${response.body}');
+    return false;
   }
 
   void fetchRecipentsList() async{
