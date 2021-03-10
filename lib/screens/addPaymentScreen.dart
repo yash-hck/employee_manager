@@ -1,7 +1,9 @@
+import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/models/payments.dart';
 import 'package:employeemanager/screens/chooseEmployeeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:employeemanager/utils/firestoreCrud.dart';
@@ -220,7 +222,7 @@ class _AddPaymentsState extends State<AddPayments> {
     return true;
   }
 
-  void addPay(result) async{
+  void addPay(Employee result) async{
 
 
     payments.method = selectedButton == 1?'Bank':'Cash';
@@ -235,6 +237,7 @@ class _AddPaymentsState extends State<AddPayments> {
       if(value){
         print('Successfully added Payment');
         isLoading = false;
+        sendEmail(result);
         Navigator.pop(context);
 
       }
@@ -246,5 +249,37 @@ class _AddPaymentsState extends State<AddPayments> {
       }
     });
 
+  }
+
+  void sendEmail(Employee result) async {
+
+    final MailOptions mailOptions = MailOptions(
+      body: ' New Transaction Recorded<br><h3>You took rs </h3><h1>${payments.amount} from Manager  ${manager.name}</h1>',
+      subject: 'the Email Subject',
+
+      recipients: [result.email],
+      isHTML: true,
+    );
+    String platformResponse;
+    final MailerResponse response = await FlutterMailer.send(mailOptions);
+    switch (response) {
+      case MailerResponse.saved: /// ios only
+        platformResponse = 'mail was saved to draft';
+        break;
+      case MailerResponse.sent: /// ios only
+        platformResponse = 'mail was sent';
+        break;
+      case MailerResponse.cancelled: /// ios only
+        platformResponse = 'mail was cancelled';
+        break;
+      case MailerResponse.android:
+        platformResponse = 'intent was successful';
+        break;
+      default:
+        platformResponse = 'unknown';
+        break;
+    }
+
+    print(platformResponse);
   }
 }

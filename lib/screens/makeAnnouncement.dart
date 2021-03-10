@@ -102,9 +102,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
   void sendEmail() async{
 
-    await fetchRecipentsList();
+    fetchRecipentsList();
     print(recipents.toString());
-    await finalSend('anonymous18881@yahoo.com', bodyController.text);
+    //await finalSend('anonymous18881@yahoo.com', bodyController.text);
     setState(() {
       isLoading = true;
     });
@@ -116,15 +116,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     }*/
 
 
-    setState(() {
-      isLoading = false;
-    });
 
 
-   /* final MailOptions mailOptions = MailOptions(
-      body: 'a long body for the email <br> with a subset of HTML',
+
+    final MailOptions mailOptions = MailOptions(
+      body: '<h1>New Annpuncement<h1><br>' + bodyController.text,
       subject: 'the Email Subject',
-      recipients: ['yashverma7830@gmail.com'],
+
       bccRecipients: recipents,
       isHTML: true,
     );
@@ -146,17 +144,19 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
       default:
         platformResponse = 'unknown';
         break;
-    };
+    }
+    setState(() {
+      isLoading = false;
+    });
     print(platformResponse);
-*/
 
 
   }
 
-  finalSend(String email, String announcement) async{
+  /*finalSend(String email, String announcement) async{
     Map<String, String> headers = new Map();
     headers["Authorization"] =
-    "Bearer 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";
+    "Bearer API";
     headers["Content-Type"] = "application/json";
 
     var url = 'https://api.sendgrid.com/v3/mail/send';
@@ -174,7 +174,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
     print('Response body: ${response.body}');
     return false;
-  }
+  }*/
 
   void fetchRecipentsList() async{
 

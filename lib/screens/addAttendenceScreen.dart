@@ -4,6 +4,7 @@ import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/screens/chooseEmployeeScreen.dart';
 import 'package:employeemanager/utils/firestoreCrud.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_select/smart_select.dart';
@@ -255,13 +256,15 @@ class _AddAttendenceState extends State<AddAttendence> {
         formKey.currentState.save();
         attendence.fullDay = fullTime;
         attendence.date = selectedDate.toString();
+
         FirestoreCRUD.addAttendenceList(result,manager,attendence).then((bool val){
           if(val == true){
             print('Success');
+            sendEmail(result);
             setState(() {
               dateController.text = 'Today';
               isLoading = false;
-              formKey.currentState.reset();
+
 
             });
           }
@@ -269,11 +272,13 @@ class _AddAttendenceState extends State<AddAttendence> {
             print('failed');
             setState(() {
               setDefaultDate();
-              formKey.currentState.reset();
+              formKey.currentState.dispose();
               isLoading = false;
             });
           }
         });
+
+
     }
 
 
@@ -283,6 +288,41 @@ class _AddAttendenceState extends State<AddAttendence> {
     selectedDate = DateTime.now();
     overtimeController.text = '0';
     dateController.text = 'Today';
+  }
+
+  Future<void> sendEmail(Employee result) async {
+
+    final MailOptions mailOptions = MailOptions(
+      body: '<h1>New Annpuncement<h1><br> Today Work Recorded full time ${attendence.fullDay} and overtime ${attendence.overtime} <br>',
+      subject: 'the Email Subject',
+
+      recipients: [result.email],
+      isHTML: true,
+    );
+    String platformResponse;
+    final MailerResponse response = await FlutterMailer.send(mailOptions);
+    switch (response) {
+      case MailerResponse.saved: /// ios only
+        platformResponse = 'mail was saved to draft';
+        break;
+      case MailerResponse.sent: /// ios only
+        platformResponse = 'mail was sent';
+        break;
+      case MailerResponse.cancelled: /// ios only
+        platformResponse = 'mail was cancelled';
+        break;
+      case MailerResponse.android:
+        platformResponse = 'intent was successful';
+        break;
+      default:
+        platformResponse = 'unknown';
+        break;
+    }
+    setState(() {
+      isLoading = false;
+    });
+    print(platformResponse);
+
   }
 
 }
