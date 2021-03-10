@@ -1,9 +1,9 @@
 class Attendence{
   String _date;
-  int _overtime;
+  double _overtime;
   bool _fullDay;
 
-
+  Attendence.blank();
   Attendence(this._date, this._overtime,this._fullDay);
 
 
@@ -37,9 +37,9 @@ class Attendence{
     this._fullDay = map['fullday'];
   }
 
-  int get overtime => _overtime;
+  double get overtime => _overtime;
 
-  set overtime(int value) {
+  set overtime(double value) {
     _overtime = value;
   }
 

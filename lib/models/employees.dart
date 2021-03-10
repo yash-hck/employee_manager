@@ -13,12 +13,18 @@ class Employee{
   double _wages;
   String _managerDocumentId;
   //String _scheme;
+  List<String> _searchKeys;
   Employee.blank();
 
   Employee( this._name,  this._dateJoined,
-      this._email,this._wages , this._mob);
+      this._email,this._wages , this._mob,this._searchKeys);
 
 
+  List<String> get searchKeys => _searchKeys;
+
+  set searchKeys(List<String> value) {
+    _searchKeys = value;
+  }
 
   String get managerDocumentId => _managerDocumentId;
 
@@ -77,6 +83,7 @@ class Employee{
     map['email'] = this._email;
     map['wages'] = this._wages;
     map['mob'] = this._mob;
+    map['searchKeys'] = this._searchKeys;
     //map['scheme'] = this._scheme;
     //map['documentId'] = this._document_id;
     //map['managerDocumentId'] = this._managerDocumentId;
@@ -93,6 +100,7 @@ class Employee{
     this._dateJoined =  map['dateJoined'];
     this._email = map['email'];
     this._mob = map['mob'];
+    this._searchKeys = map['searchKeys'];
     //this._scheme = map['scheme'];
     //this._document_id = map['documentId'];
     //this._managerDocumentId = map['managerDocumentId'];

@@ -10,3 +10,4 @@ List<String> menuImage = ['images/adds.png','images/rup.png','images/atten.png',
 
 final String MANAGER_COLLECTION = 'managers';
 final String EMPLOYEES_COLLECTION = 'employees';
+final String ATTENDENCE_COLLECTION = 'attendence';

@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:employeemanager/models/attendence.dart';
 import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/models/payments.dart';
@@ -89,6 +90,13 @@ class FirestoreCRUD{
       print('length issue');
       return false;
     }
+    List<String> keys = [];
+    String tmp = "";
+    for(int i = 0;i<employee.name.length;i++){
+      tmp += employee.name[i];
+      keys.add(tmp);
+    }
+    employee.searchKeys = keys;
     employee.dateJoined = DateTime.now().toString();
     await FirebaseFirestore.instance.collection('managers')
       .doc(employee.managerDocumentId)
@@ -166,6 +174,40 @@ class FirestoreCRUD{
 
   static getDetailForEmployee(Employee employee) async{
     
+  }
+
+  static Future<bool> addAttendenceList(Employee employee,Manager manager,Attendence attendence) async {
+
+    print(employee.email);
+    int len = 0;
+    String id;
+    var result  = await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
+    .doc(manager.documentId)
+    .collection(EMPLOYEES_COLLECTION)
+    .where('email', isEqualTo: employee.email)
+    .get()
+    .then((QuerySnapshot docs){
+      id = docs.docs[0].id;
+      len = docs.docs.length;
+
+    });
+    print('id  => '+ id);
+
+    if(len > 1){
+      print('length issue');
+      return false;
+    }
+
+    await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
+    .doc(manager.documentId)
+    .collection(EMPLOYEES_COLLECTION)
+    .doc(id)
+    .collection(ATTENDENCE_COLLECTION)
+    .add(attendence.toMap());
+
+    return true;
+
+
   }
 
 }

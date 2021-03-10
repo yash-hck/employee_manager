@@ -4,6 +4,8 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:mailer/mailer.dart';
+import 'package:http/http.dart' as http;
+
 
 class AnnouncementScreen extends StatefulWidget {
   @override
@@ -99,11 +101,15 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
   void sendEmail() async{
 
-    await
-    fetchRecipentsList();
+    await fetchRecipentsList();
     print(recipents.toString());
 
-    final MailOptions mailOptions = MailOptions(
+    for(String x in recipents){
+      await finalSend(x, bodyController.text);
+    }
+
+
+   /* final MailOptions mailOptions = MailOptions(
       body: 'a long body for the email <br> with a subset of HTML',
       subject: 'the Email Subject',
       recipients: ['yashverma7830@gmail.com'],
@@ -130,7 +136,29 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         break;
     };
     print(platformResponse);
+*/
 
+
+  }
+
+  finalSend(String email, String announcement) async{
+    Map<String, String> headers = new Map();
+    headers["Authorization"] =
+    "Bearer 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";
+    headers["Content-Type"] = "application/json";
+
+    var url = 'https://api.sendgrid.com/v3/mail/send';
+    var response = await http.post(url,
+        headers: headers,
+        body:
+        "{\n          \"personalizations\": [\n            {\n              \"to\": [\n                {\n                  \"email\": \"$email\"\n                },\n              ]\n            }\n          ],\n          \"from\": {\n            \"email\": \"yash7830verma@gmail.com\"\n          },\n          \"subject\": \"New Announcement\",\n          \"content\": [\n            {\n              \"type\": \"text\/plain\",\n              \"value\": \"New Announcement: $announcement\"\n            }\n          ]\n        }");
+
+    print("{\n          \"personalizations\": [\n            {\n              \"to\": [\n                {\n                  \"email\": \"$email\"\n                },\n              ]\n            }\n          ],\n          \"from\": {\n            \"email\": \"yash7830verma@gmail.com\"\n          },\n          \"subject\": \"New Announcement\",\n          \"content\": [\n            {\n              \"type\": \"text\/plain\",\n              \"value\": \"New Announcement: $announcement\"\n            }\n          ]\n        }");
+
+
+    print('Response status: ${response.statusCode}');
+
+    print('Response body: ${response.body}');
   }
 
   void fetchRecipentsList() async{
