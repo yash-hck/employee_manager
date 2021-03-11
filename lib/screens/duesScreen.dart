@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/utils/configs.dart';
+import 'package:employeemanager/utils/firestoreCrud.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -35,10 +37,11 @@ class _DuesScreenState extends State<DuesScreen> {
           stream: (query != null && query != "") ?
           FirebaseFirestore.instance.collection(MANAGER_COLLECTION).doc(
               manager.documentId)
-              .collection('payments').orderBy(sorted,descending: true)
+              .collection(EMPLOYEES_COLLECTION)
+              .where('searchKeys',arrayContains: query)
               .snapshots() :
           FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-              .doc(manager.documentId).collection('payments').snapshots(),
+              .doc(manager.documentId).collection(EMPLOYEES_COLLECTION).snapshots(),
           builder: (context, snapshot) {
             return (snapshot.connectionState == ConnectionState.waiting)?
             Center(child: CircularProgressIndicator(),) :
@@ -47,7 +50,7 @@ class _DuesScreenState extends State<DuesScreen> {
 
             ListView.builder(
               shrinkWrap: true,
-              itemCount: snapshot.data.docs.length + 1,
+              itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
 
                 if(index == 0){
@@ -68,12 +71,13 @@ class _DuesScreenState extends State<DuesScreen> {
                   );
                 }
                 DocumentSnapshot data = snapshot.data.docs[index-1];
+                Employee emp = Employee.fromQurrySnapshot(snapshot.data.docs[index-1]);
                 print('data = ' + data.toString());
-                print(snapshot.data.toString());
+                //print(snapshot.data.toString());
                 return Card(
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 15, right: 15, top: 15, bottom: 5),
+                        left: 15, right: 15, top: 15, bottom: 15),
                     child: Column(
 
                       children: [
@@ -86,49 +90,48 @@ class _DuesScreenState extends State<DuesScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Text('Paid to: '),
-                                    Text(
-                                      data['recipentName'],
-                                      style: TextStyle(
+                                Text(
+                                  data['name'],
+                                  style: TextStyle(
 
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                  ],
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold
+                                  ),
                                 ),
 
-                                Text(data['recipent'],
+                                Text(data['email'],
                                   style: TextStyle(color: Colors.grey),
                                 )
                               ],
                             ),
                             Spacer(),
-                            Text(data['amount'],
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500
+                            FutureBuilder(
+                              future: FirestoreCRUD.calculateDues(emp, manager),
+                              builder: (context, AsyncSnapshot<double> snap){
+                                print(snap.data);
+                                if(snap.hasError){
+                                  print('snap error - ' + snap.error.toString());
+                                   print('dayt = ' + snap.data.toString());
+                                  return Text('Error');
+                                }
 
-                              ),
+                                if(snap.connectionState == ConnectionState.waiting)return CircularProgressIndicator();
+
+                                return Text(snap.data.toString(),
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500
+
+                                  ),
+                                );
+                              },
                             ),
                             Icon(FontAwesomeIcons.rupeeSign,
                               color: Colors.greenAccent,
                             )
                           ],
                         ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Text(
-                            DateFormat("dd/MM/yyyy").format(DateTime.parse(data['date'])).toString(),
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w300
 
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   ),

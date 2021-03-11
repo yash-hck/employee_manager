@@ -227,7 +227,7 @@ class _AddPaymentsState extends State<AddPayments> {
 
     payments.method = selectedButton == 1?'Bank':'Cash';
     payments.date = DateTime.now().toString();
-    payments.amount = amountController.text;
+    payments.amount = double.parse(amountController.text);
 
     setState(() {
       isLoading = true;

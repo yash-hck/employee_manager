@@ -139,7 +139,7 @@ class FirestoreCRUD{
   static Future<List<Employee>> getEmployeeList() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     List<Employee> list = [];
-    await FirebaseFirestore.instance.collection('managers').doc(await preferences.getString('jsonId')).collection('employees').get()
+    await FirebaseFirestore.instance.collection('managers').doc(preferences.getString('jsonId')).collection('employees').get()
     .then((QuerySnapshot querySnapshot){
       querySnapshot.size;
       querySnapshot.docs.forEach((element) {
@@ -181,7 +181,7 @@ class FirestoreCRUD{
     print(employee.email);
     int len = 0;
     String id;
-    var result  = await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
+    await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
     .doc(manager.documentId)
     .collection(EMPLOYEES_COLLECTION)
     .where('email', isEqualTo: employee.email)
@@ -210,27 +210,35 @@ class FirestoreCRUD{
 
   }
 
-  static Future<double
+  static Future<double> calculateDues(Employee employee, Manager manager) async{
 
-  > calculateDues(Employee employee, Manager manager) async{
+    double workAmount = await getWorkAmt(employee, manager);
+    double paidAmount = await getPaidAmt(employee,manager);
+    return (workAmount - paidAmount).toDouble();
 
-    String id;
+  }
 
-    await FirebaseFirestore.instance
-        .collection(MANAGER_COLLECTION)
+  static Future<double> getAllPays(Employee employee , Manager manager)async{
+    FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
+        .doc(manager.documentId)
+        .collection('payments');
+  }
+
+  static Future<double> getWorkAmt(Employee employee, Manager manager) async {
+
+    String id = await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
         .doc(manager.documentId)
         .collection(EMPLOYEES_COLLECTION)
-        .where('email', isEqualTo: employee.email)
+        .where('email',isEqualTo: employee.email)
         .get()
-        .then((QuerySnapshot querySnapshot){
-          id = querySnapshot.docs[0].id;
-    });
+        .then((value) => value.docs[0].id);
 
-    double fullTime = 0;
+
+    double amount = 0;
+    double fulltime = 0;
     double over = 0;
 
-    await FirebaseFirestore.instance
-    .collection(MANAGER_COLLECTION)
+    await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
     .doc(manager.documentId)
     .collection(EMPLOYEES_COLLECTION)
     .doc(id)
@@ -239,17 +247,42 @@ class FirestoreCRUD{
     .then((QuerySnapshot querySnapshot){
       querySnapshot.docs.forEach((element) {
         Attendence attendence = Attendence.fromMapObject(element.data());
-        if(attendence.fullDay){
-          fullTime++;
-        }
-        over += attendence.overtime;
+        if(attendence.fullDay)fulltime++;
+
+        over+=attendence.overtime;
 
       });
     });
+    print('employee ' + employee.name);
+    print('full days'  + fulltime.toString() + 'overtimr' + over.toString());
 
-    double total = fullTime*employee.wages + (over/8)*employee.wages;
-    return total;
+    amount = fulltime*(employee.wages) + (over/8.0)*employee.wages;
+    print('amount = ' + amount.toString());
+    return amount.toDouble();
 
   }
+
+  static getPaidAmt(Employee employee, Manager manager) async{
+
+    double amount = 0;
+
+    await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
+        .doc(manager.documentId).collection('payments')
+        .get()
+        .then((QuerySnapshot querySnapshot){
+          querySnapshot.docs.forEach((element) {
+            print('Actual error ' + element.data()['amount'].runtimeType.toString());
+            Payments payments = Payments.fromMapObject(element.data());
+
+            amount += payments.amount;
+
+            print('payment amount ' + payments.amount.toString());
+
+          });
+    });
+    return amount.toDouble();
+
+  }
+
 
 }

@@ -61,16 +61,7 @@ class DrawerScreen extends StatelessWidget {
 
               children: [
 
-                ListTile(
-                  onTap: (){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashBoardScreen()));
-                  },
-                  leading: Icon(Icons.dashboard,color: Colors.white,),
-                  title: Text('Dashboard',
-                  style: TextStyle(
-                    color: Colors.white
-                  ),),
-                ),
+
                 ListTile(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeesScreen(manager: manager,)));

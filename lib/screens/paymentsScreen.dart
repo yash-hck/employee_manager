@@ -105,7 +105,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                                   ],
                                 ),
                                 Spacer(),
-                                Text(data['amount'],
+                                Text(data['amount'].toString(),
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500
