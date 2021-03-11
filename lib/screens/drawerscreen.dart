@@ -1,6 +1,7 @@
 import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/screens/attendenceScreen.dart';
 import 'package:employeemanager/screens/dashboardScreen.dart';
+import 'package:employeemanager/screens/duesScreen.dart';
 import 'package:employeemanager/screens/employeesScreen.dart';
 import 'package:employeemanager/screens/login.dart';
 import 'package:employeemanager/screens/paymentsScreen.dart';
@@ -92,10 +93,10 @@ class DrawerScreen extends StatelessWidget {
                 ),
                 ListTile(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AttendenceScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DuesScreen(manager: manager,)));
                   },
-                  leading: Icon(FontAwesomeIcons.database,color: Colors.white,),
-                  title: Text('Attendence',
+                  leading: Icon(FontAwesomeIcons.rupeeSign,color: Colors.white,),
+                  title: Text('Dues',
                     style: TextStyle(
                         color: Colors.white
                     ),),

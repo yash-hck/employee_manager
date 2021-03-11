@@ -210,4 +210,46 @@ class FirestoreCRUD{
 
   }
 
+  static Future<double
+
+  > calculateDues(Employee employee, Manager manager) async{
+
+    String id;
+
+    await FirebaseFirestore.instance
+        .collection(MANAGER_COLLECTION)
+        .doc(manager.documentId)
+        .collection(EMPLOYEES_COLLECTION)
+        .where('email', isEqualTo: employee.email)
+        .get()
+        .then((QuerySnapshot querySnapshot){
+          id = querySnapshot.docs[0].id;
+    });
+
+    double fullTime = 0;
+    double over = 0;
+
+    await FirebaseFirestore.instance
+    .collection(MANAGER_COLLECTION)
+    .doc(manager.documentId)
+    .collection(EMPLOYEES_COLLECTION)
+    .doc(id)
+    .collection(ATTENDENCE_COLLECTION)
+    .get()
+    .then((QuerySnapshot querySnapshot){
+      querySnapshot.docs.forEach((element) {
+        Attendence attendence = Attendence.fromMapObject(element.data());
+        if(attendence.fullDay){
+          fullTime++;
+        }
+        over += attendence.overtime;
+
+      });
+    });
+
+    double total = fullTime*employee.wages + (over/8)*employee.wages;
+    return total;
+
+  }
+
 }
