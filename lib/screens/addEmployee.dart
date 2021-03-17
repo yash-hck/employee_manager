@@ -1,5 +1,6 @@
 
 import 'package:employeemanager/models/employees.dart';
+import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/utils/firestoreCrud.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,11 +8,22 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddEmployee extends StatefulWidget {
+
+  final Manager manager;
+
+
+  AddEmployee({this.manager});
+
   @override
-  _AddEmployeeState createState() => _AddEmployeeState();
+  _AddEmployeeState createState() => _AddEmployeeState(manager: manager);
 }
 
 class _AddEmployeeState extends State<AddEmployee> {
+
+  final Manager manager;
+
+
+  _AddEmployeeState({this.manager});
 
   final formKey = GlobalKey<FormState>();
   String jsonId;
@@ -272,7 +284,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       //print('scheme' + employee.wages.toString());
 
       print(employee.managerDocumentId);
-      FirestoreCRUD.addEmployee(context, employee).then((value){
+      FirestoreCRUD.addEmployee(context, employee,manager).then((value){
         if(value){
           print('Successfully Registered Employee');
         }

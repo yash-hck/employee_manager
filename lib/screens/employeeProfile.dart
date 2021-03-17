@@ -53,7 +53,7 @@ class EmployeeProile extends StatelessWidget {
             Card(
               child : Row(
                 children: [
-                  Text('Due today is ')
+                  Text('Due today is  ')
                 ],
               )
             )

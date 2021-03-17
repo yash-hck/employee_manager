@@ -158,7 +158,7 @@ class Tile extends StatelessWidget {
 
   Tile({this.imagePath, this.index, this.title,this.manager}){
     incoming = manager;
-    screens = [AddEmployee(),AddPayments(manager: incoming),AddAttendence(manager: manager,),AnnouncementScreen()];
+    screens = [AddEmployee(manager: manager,),AddPayments(manager: incoming),AddAttendence(manager: manager,),AnnouncementScreen()];
   }
 
 

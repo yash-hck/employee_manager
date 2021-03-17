@@ -54,12 +54,14 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
         ),
         body:  StreamBuilder<QuerySnapshot>(
           stream: (query != null && query != "") ?
-          FirebaseFirestore.instance.collection(MANAGER_COLLECTION).doc(
-              manager.documentId)
-              .collection(EMPLOYEES_COLLECTION).where("searchKeys", arrayContains: query)
+          FirebaseFirestore.instance
+              .collection(EMPLOYEES_COLLECTION)
+              .where('managerDocumentId',isEqualTo: manager.documentId )
+              .where("searchKeys", arrayContains: query)
               .snapshots() :
-          FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-              .doc(manager.documentId).collection(EMPLOYEES_COLLECTION).snapshots(),
+          FirebaseFirestore.instance.collection(EMPLOYEES_COLLECTION)
+              .where('managerDocumentId', isEqualTo: manager.documentId)
+              .snapshots(),
           builder: (context, snapshot) {
             return (snapshot.connectionState == ConnectionState.waiting)?
             Center(child: CircularProgressIndicator(),) :

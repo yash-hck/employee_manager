@@ -1,3 +1,4 @@
+import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/utils/firestoreCrud.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -8,11 +9,22 @@ import 'package:http/http.dart' as http;
 
 
 class AnnouncementScreen extends StatefulWidget {
+
+  final Manager manager;
+
+
+  AnnouncementScreen({this.manager});
+
   @override
   _AnnouncementScreenState createState() => _AnnouncementScreenState();
 }
 
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
+
+  final Manager manager;
+
+
+  _AnnouncementScreenState({this.manager});
 
   String username = 'yash7830verma@gmail.com';
   String password = 'Yashverma@123';
@@ -178,7 +190,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
   void fetchRecipentsList() async{
 
-    recipents = await FirestoreCRUD.fetchRecipents();
+    recipents = await FirestoreCRUD.fetchRecipents(manager);
 
 
 

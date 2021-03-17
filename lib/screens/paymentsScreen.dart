@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employeemanager/models/manager.dart';
+import 'package:employeemanager/models/payments.dart';
 import 'package:employeemanager/utils/configs.dart';
+import 'package:employeemanager/utils/firestoreCrud.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -30,15 +32,11 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
           title: Text('PAYMENTS'),
           ),
 
-        body:  StreamBuilder<QuerySnapshot>(
-          stream: (query != null && query != "") ?
-          FirebaseFirestore.instance.collection(MANAGER_COLLECTION).doc(
-              manager.documentId)
-              .collection('payments').orderBy(sorted,descending: true)
-              .snapshots() :
-          FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-              .doc(manager.documentId).collection('payments').orderBy(sorted,descending: true).snapshots(),
-          builder: (context, snapshot) {
+        body: FutureBuilder(
+          future: (query != null && query != "") ?
+          FirestoreCRUD.getPayments(manager) :
+          FirestoreCRUD.getPayments(manager),
+          builder: (context, AsyncSnapshot<List<Payments>> snapshot) {
             return (snapshot.connectionState == ConnectionState.waiting)?
             Center(child: CircularProgressIndicator(),) :
 
@@ -46,7 +44,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
 
                 ListView.builder(
                   shrinkWrap: true,
-                  itemCount: snapshot.data.docs.length + 1,
+                  itemCount: snapshot.data.length + 1,
                   itemBuilder: (context, index) {
 
                     if(index == 0){
@@ -66,8 +64,8 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                         ],
                       );
                     }
-                    DocumentSnapshot data = snapshot.data.docs[index-1];
-                    print('data = ' + data.toString());
+                    //DocumentSnapshot data = snapshot.data.docs[index-1];
+                    //print('data = ' + data.toString());
                     print(snapshot.data.toString());
                     return Card(
                       child: Padding(
@@ -89,7 +87,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                                       children: [
                                         Text('Paid to: '),
                                         Text(
-                                          data['recipentName'],
+                                          snapshot.data[index - 1].recipentName,
                                           style: TextStyle(
 
                                               fontSize: 20,
@@ -99,13 +97,13 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                                       ],
                                     ),
 
-                                    Text(data['recipent'],
+                                    Text(snapshot.data[index - 1].recipent,
                                     style: TextStyle(color: Colors.grey),
                                     )
                                   ],
                                 ),
                                 Spacer(),
-                                Text(data['amount'].toString(),
+                                Text(snapshot.data[index - 1].amount.toString(),
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500
@@ -120,7 +118,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Text(
-                                DateFormat("dd/MM/yyyy").format(DateTime.parse(data['date'])).toString(),
+                                DateFormat("dd/MM/yyyy").format(DateTime.parse(snapshot.data[index-1].date)).toString(),
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.w300

@@ -86,7 +86,7 @@ class Employee{
     map['searchKeys'] = this._searchKeys;
     //map['scheme'] = this._scheme;
     //map['documentId'] = this._document_id;
-    //map['managerDocumentId'] = this._managerDocumentId;
+    map['managerDocumentId'] = this._managerDocumentId;
 
     return map;
 

@@ -4,6 +4,13 @@ class Payments{
   double _amount;
   String _recipent;
   String _recipentName;
+  String _issuer;
+
+  String get issuer => _issuer;
+
+  set issuer(String value) {
+    _issuer = value;
+  }
 
   Payments.blank();
 
@@ -19,6 +26,8 @@ class Payments{
   String get method => _method;
 
   String get recipentName => _recipentName;
+
+
 
   set recipentName(String value) {
     _recipentName = value;
@@ -47,6 +56,7 @@ class Payments{
     map['amount'] = this._amount;
     map['recipent'] = this._recipent;
     map['recipentName'] = this._recipentName;
+    //map['issuer'] = this._issuer;
 
     return map;
   }
@@ -57,6 +67,7 @@ class Payments{
     this._date = map['date'];
     this._recipentName = map['recipentName'];
     this._recipent = map['recipent'];
+   // this._issuer = map['issuer'];
   }
 
 

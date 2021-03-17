@@ -9,6 +9,7 @@ import 'package:employeemanager/screens/dashboard.dart';
 import 'package:employeemanager/utils/configs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -75,12 +76,12 @@ class FirestoreCRUD{
     return logged;
   }
 
-  static Future<bool> addEmployee(BuildContext context,Employee employee) async{
+  static Future<bool> addEmployee(BuildContext context,Employee employee, Manager manager) async{
 
     int length = 0;
    print(employee.managerDocumentId);
-    await FirebaseFirestore.instance.collection('managers')
-        .doc(employee.managerDocumentId)
+   employee.managerDocumentId = manager.documentId;
+    await FirebaseFirestore.instance
         .collection('employees').where('email',isEqualTo: employee.email)
         .get().then((QuerySnapshot querySnampshot){
           length = querySnampshot.docs.length;
@@ -98,8 +99,7 @@ class FirestoreCRUD{
     }
     employee.searchKeys = keys;
     employee.dateJoined = DateTime.now().toString();
-    await FirebaseFirestore.instance.collection('managers')
-      .doc(employee.managerDocumentId)
+    await FirebaseFirestore.instance
     .collection('employees')
     .add(employee.toMap());
 
@@ -109,12 +109,12 @@ class FirestoreCRUD{
 
   }
   
-  static Future<List<String>> fetchRecipents()async{
+  static Future<List<String>> fetchRecipents(Manager manager)async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     
     String jsonId = preferences.getString('jsonId');
     List<String > recipents = [];
-    await FirebaseFirestore.instance.collection('managers').doc(jsonId).collection('employees')
+    await FirebaseFirestore.instance.collection('employees').where('managerDocumentId', isEqualTo: manager.documentId)
     .get().then((QuerySnapshot querySnapshot) => {
       querySnapshot.docs.forEach((doc) {
         print(doc['email'].toString());
@@ -136,10 +136,12 @@ class FirestoreCRUD{
 
   }
 
-  static Future<List<Employee>> getEmployeeList() async{
+  static Future<List<Employee>> getEmployeeList(Manager manager) async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     List<Employee> list = [];
-    await FirebaseFirestore.instance.collection('managers').doc(preferences.getString('jsonId')).collection('employees').get()
+    await FirebaseFirestore.instance.collection('employees')
+        .where('managerDocumentId', isEqualTo: manager.documentId)
+        .get()
     .then((QuerySnapshot querySnapshot){
       querySnapshot.size;
       querySnapshot.docs.forEach((element) {
@@ -158,10 +160,22 @@ class FirestoreCRUD{
     print('email' + employee.email);
     payments.recipent = employee.email;
     payments.recipentName = employee.name;
-    
+    //payments.issuer = manager.email;
+
+    String id;
+
+    await FirebaseFirestore.instance.collection(EMPLOYEES_COLLECTION)
+    .where('email',isEqualTo: employee.email)
+    .get()
+    .then((QuerySnapshot docs){
+      id = docs.docs[0].id;
+    });
+
+
     try{
-      await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-          .doc(manager.documentId)
+      await FirebaseFirestore.instance
+          .collection(EMPLOYEES_COLLECTION)
+          .doc(id)
           .collection('payments')
           .add(payments.toMap());
       }
@@ -181,8 +195,7 @@ class FirestoreCRUD{
     print(employee.email);
     int len = 0;
     String id;
-    await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-    .doc(manager.documentId)
+    await FirebaseFirestore.instance
     .collection(EMPLOYEES_COLLECTION)
     .where('email', isEqualTo: employee.email)
     .get()
@@ -198,8 +211,7 @@ class FirestoreCRUD{
       return false;
     }
 
-    await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-    .doc(manager.documentId)
+    await FirebaseFirestore.instance
     .collection(EMPLOYEES_COLLECTION)
     .doc(id)
     .collection(ATTENDENCE_COLLECTION)
@@ -283,6 +295,52 @@ class FirestoreCRUD{
     return amount.toDouble();
 
   }
+
+  static Future<List<Payments>> getPayments( Manager manager)async{
+
+    List<Payments> list = [];
+    String id;
+    List<String> tmp = [];
+    var ref = await FirebaseFirestore.instance.collection(EMPLOYEES_COLLECTION);
+    await ref
+    .where('managerDocumentId', isEqualTo: manager.documentId)
+    .get()
+    .then((QuerySnapshot snapshot) async{
+      print('snapshot length - ' + snapshot.docs.length.toString());
+      snapshot.docs.forEach((element) async {
+        print('id  - ' + element.id);
+        tmp.add(element.id);
+      });
+    });
+
+    list = await getListofPayments(tmp);
+    print('tmp = ' + tmp.length.toString());
+    print('length = ' + list.length.toString());
+    return list;
+  }
+
+  static getListofPayments(List<String> tmp) async{
+
+    List<Payments> list = [];
+
+    for(String id in tmp){
+      await FirebaseFirestore.instance
+          .collection(EMPLOYEES_COLLECTION)
+          .doc(id)
+          .collection('payments')
+          .get()
+          .then((value){
+            value.docs.forEach((element) {
+              Payments payments = Payments.fromMapObject(element.data());
+              list.add(payments);
+            });
+
+      });
+
+    }
+    return list;
+  }
+
 
 
 }
