@@ -4,6 +4,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/models/manager.dart';
+import 'package:employeemanager/screens/employeeProfile.dart';
 import 'package:employeemanager/utils/configs.dart';
 import 'package:employeemanager/utils/firestoreCrud.dart';
 import 'package:flutter/material.dart';
@@ -70,37 +71,43 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                 DocumentSnapshot data = snapshot.data.docs[index];
                 print('data = ' + data.toString());
                 print(snapshot.data.toString());
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 15, right: 15, top: 15, bottom: 15),
-                    child: Column(
+                Employee employee = Employee.fromQurrySnapshot(data);
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeeProile(employee: employee)));
+                  },
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, top: 15, bottom: 15),
+                      child: Column(
 
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
-                            ),
-                            SizedBox(width: 20,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  data['name'],
-                                  style: TextStyle(
-                                      fontSize: 20
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                              ),
+                              SizedBox(width: 20,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    data['name'],
+                                    style: TextStyle(
+                                        fontSize: 20
+                                    ),
                                   ),
-                                ),
-                                Text(data['email'])
-                              ],
-                            )
-                          ],
-                        )
-                      ],
+                                  Text(data['email'])
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
 
+                  ),
                 );
               },
             );
