@@ -35,14 +35,13 @@ class _DuesScreenState extends State<DuesScreen> {
 
         body:  StreamBuilder<QuerySnapshot>(
           stream: (query != null && query != "") ?
-          FirebaseFirestore.instance.collection(MANAGER_COLLECTION).doc(
-              manager.documentId)
+          FirebaseFirestore.instance
               .collection(EMPLOYEES_COLLECTION)
               .where('searchKeys',arrayContains: query)
               .snapshots() :
-          FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-              .doc(manager.documentId).collection(EMPLOYEES_COLLECTION).snapshots(),
+          FirebaseFirestore.instance.collection(EMPLOYEES_COLLECTION).where('managerDocumentId', isEqualTo: manager.documentId).snapshots(),
           builder: (context, snapshot) {
+            //print('check = ' + snapshot.data.docs.length.toString());
             return (snapshot.connectionState == ConnectionState.waiting)?
             Center(child: CircularProgressIndicator(),) :
 
@@ -50,7 +49,7 @@ class _DuesScreenState extends State<DuesScreen> {
 
             ListView.builder(
               shrinkWrap: true,
-              itemCount: snapshot.data.docs.length,
+              itemCount: snapshot.data.docs.length + 1,
               itemBuilder: (context, index) {
 
                 if(index == 0){

@@ -238,8 +238,7 @@ class FirestoreCRUD{
 
   static Future<double> getWorkAmt(Employee employee, Manager manager) async {
 
-    String id = await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-        .doc(manager.documentId)
+    String id = await FirebaseFirestore.instance
         .collection(EMPLOYEES_COLLECTION)
         .where('email',isEqualTo: employee.email)
         .get()
@@ -250,8 +249,7 @@ class FirestoreCRUD{
     double fulltime = 0;
     double over = 0;
 
-    await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-    .doc(manager.documentId)
+    await FirebaseFirestore.instance
     .collection(EMPLOYEES_COLLECTION)
     .doc(id)
     .collection(ATTENDENCE_COLLECTION)
@@ -278,8 +276,15 @@ class FirestoreCRUD{
 
     double amount = 0;
 
-    await FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
-        .doc(manager.documentId).collection('payments')
+    String id = await FirebaseFirestore.instance
+        .collection(EMPLOYEES_COLLECTION)
+        .where('email',isEqualTo: employee.email)
+        .get()
+        .then((value) => value.docs[0].id);
+
+
+    await FirebaseFirestore.instance.collection(EMPLOYEES_COLLECTION)
+        .doc(id).collection('payments')
         .get()
         .then((QuerySnapshot querySnapshot){
           querySnapshot.docs.forEach((element) {
