@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirestoreCRUD{
@@ -137,7 +138,7 @@ class FirestoreCRUD{
   }
 
   static Future<List<Employee>> getEmployeeList(Manager manager) async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+
     List<Employee> list = [];
     await FirebaseFirestore.instance.collection('employees')
         .where('managerDocumentId', isEqualTo: manager.documentId)
@@ -147,6 +148,7 @@ class FirestoreCRUD{
       querySnapshot.docs.forEach((element) {
         //print(element.toString());
         Employee employee = Employee.fromMapObject(element.data());
+        employee.document_id = element.id;
         list.add(employee);
 
       });
@@ -365,6 +367,75 @@ class FirestoreCRUD{
       len = snapshot.docs.length;
     });
     return len;
+  }
+
+  static Future<int> getNoOfEmployees(Manager manager) async {
+    int len = await FirebaseFirestore.instance
+        .collection(EMPLOYEES_COLLECTION)
+        .where('managerDocumentId', isEqualTo: manager.documentId)
+        .get()
+        .then((value) => value.docs.length);
+
+    return len;
+  }
+
+  static Future<double> getTotalHrsLastWeek(Manager manager) async {
+    
+    List<String> tmp = [];
+    
+    await FirebaseFirestore.instance
+    .collection(EMPLOYEES_COLLECTION)
+    .where('managerDocumentId', isEqualTo:  manager.documentId)
+    .get()
+    .then((QuerySnapshot snapshot){
+      snapshot.docs.forEach((element) {
+        tmp.add(element.id);
+      });
+    });
+
+    double hrs = await calculteHrsInLastWeek(tmp);
+
+    return hrs;
+  }
+
+  static Future<double> calculteHrsInLastWeek(List<String> tmp) async{
+
+    double hrs = 0.0;
+
+    for(String id in tmp){
+      await FirebaseFirestore.instance
+          .collection(EMPLOYEES_COLLECTION)
+          .doc(id)
+          .collection(ATTENDENCE_COLLECTION)
+          .get()
+          .then((QuerySnapshot snapshot){
+            snapshot.docs.forEach((element) {
+              Attendence attendence = Attendence.fromMapObject(element.data());
+              if(attendence.fullDay){
+                hrs += 8.5;
+              }
+              hrs += attendence.overtime;
+            });
+      });
+    }
+    return hrs;
+
+  }
+
+  static Future<double> getPaymentsOfLastdays(int days,Manager manager) async {
+
+    double paid = 0.0;
+
+    DateTime date = DateTime.now().subtract(Duration(days: days));
+
+    List<Payments> list = await getPayments(manager);
+
+    for(Payments pay in list){
+      if(DateTime.parse(pay.date).isAfter(date)){
+        paid += pay.amount;
+      }
+    }
+    return paid;
   }
 
 

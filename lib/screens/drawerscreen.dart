@@ -94,7 +94,7 @@ class DrawerScreen extends StatelessWidget {
                 ),
                 ListTile(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(manager: manager,)));
                   },
                   leading: Icon(Icons.person_outline,color: Colors.white,),
                   title: Text('Profile',

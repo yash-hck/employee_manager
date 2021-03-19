@@ -2,6 +2,7 @@ import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/utils/firestoreCrud.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class EmployeeProile extends StatelessWidget {
 
@@ -165,6 +166,10 @@ class EmployeeProile extends StatelessWidget {
               ),
 
             ),
+            SizedBox(height: 15,),
+            Align(
+              alignment: Alignment.centerRight,
+                child: Text('Joined on ' + DateFormat.yMMMd().format(DateTime.parse(employee.dateJoined))))
           ],
         ),
       ),
