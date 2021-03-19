@@ -105,7 +105,7 @@ class _DuesScreenState extends State<DuesScreen> {
                             ),
                             Spacer(),
                             FutureBuilder(
-                              future: FirestoreCRUD.calculateDues(emp, manager),
+                              future: FirestoreCRUD.calculateDues(emp),
                               builder: (context, AsyncSnapshot<double> snap){
                                 print(snap.data);
                                 if(snap.hasError){

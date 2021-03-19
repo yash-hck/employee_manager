@@ -222,10 +222,10 @@ class FirestoreCRUD{
 
   }
 
-  static Future<double> calculateDues(Employee employee, Manager manager) async{
+  static Future<double> calculateDues(Employee employee) async{
 
-    double workAmount = await getWorkAmt(employee, manager);
-    double paidAmount = await getPaidAmt(employee,manager);
+    double workAmount = await getWorkAmt(employee,);
+    double paidAmount = await getPaidAmt(employee);
     return (workAmount - paidAmount).toDouble();
 
   }
@@ -236,7 +236,7 @@ class FirestoreCRUD{
         .collection('payments');
   }
 
-  static Future<double> getWorkAmt(Employee employee, Manager manager) async {
+  static Future<double> getWorkAmt(Employee employee,) async {
 
     String id = await FirebaseFirestore.instance
         .collection(EMPLOYEES_COLLECTION)
@@ -272,7 +272,7 @@ class FirestoreCRUD{
 
   }
 
-  static getPaidAmt(Employee employee, Manager manager) async{
+  static getPaidAmt(Employee employee,) async{
 
     double amount = 0;
 
@@ -344,6 +344,27 @@ class FirestoreCRUD{
 
     }
     return list;
+  }
+
+  static Future<int> getAttentenceforLastDays(Employee employee)async{
+    String id = await FirebaseFirestore.instance
+        .collection(EMPLOYEES_COLLECTION)
+        .where('email',isEqualTo: employee.email)
+        .get()
+        .then((value) => value.docs[0].id);
+    
+    String date = DateTime.now().subtract(Duration(days: 15)).toString();
+    int len = 0;
+    await FirebaseFirestore.instance
+    .collection(EMPLOYEES_COLLECTION)
+    .doc(id)
+    .collection(ATTENDENCE_COLLECTION)
+    .where('date',isGreaterThan: date)
+    .get()
+    .then((QuerySnapshot snapshot){
+      len = snapshot.docs.length;
+    });
+    return len;
   }
 
 
