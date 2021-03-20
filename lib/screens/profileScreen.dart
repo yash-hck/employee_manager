@@ -1,7 +1,16 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/models/manager.dart';
+import 'package:employeemanager/utils/configs.dart';
 import 'package:employeemanager/utils/firestoreCrud.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:koukicons/camera2.dart';
+import 'package:koukicons/framePic.dart';
 
 class ProfileScreen extends StatefulWidget {
 
@@ -16,7 +25,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
 
   final Manager manager;
-
+  File _image;
 
   _ProfileScreenState({this.manager});
 
@@ -24,6 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(icon: Icon(Icons.edit,
+            color: Colors.white ,
+          ),)
+        ],
+
         title: Text(manager.name),
       ),
       body: Container(
@@ -33,9 +48,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Align(
                 alignment: Alignment.center,
-                child: CircleAvatar(
-                  radius: 65,
-                ),
+                child: FutureBuilder(
+                  future: FirebaseStorage.instance.ref('Managers/${manager.email}').getDownloadURL(),
+                  builder: (context, AsyncSnapshot<String> snapshot){
+                    if(snapshot.connectionState == ConnectionState.waiting)
+                      return CircularProgressIndicator();
+                    return CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      backgroundImage: snapshot.data == null? AssetImage('images/abd.jpg'):NetworkImage(snapshot.data),
+                      radius: 65,
+                      child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: gradient
+                            ),
+                            child: IconButton(icon: Icon(Icons.camera_alt,
+                              color: Colors.white,
+
+
+
+                            ),
+                                onPressed:() {
+                                  showSelelectionSheet(context);
+                                  //getImage(true);
+                                }
+
+                            ),
+                          )),
+                    );
+                 },
+                )
+
+                /**/
               ),
               SizedBox(height: 20,),
               Text(manager.name,
@@ -152,5 +199,119 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Future getImage(bool gallery)async{
+    ImagePicker imagePicker = ImagePicker();
+    PickedFile pickedFile;
+
+    if(gallery){
+      pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+
+    }
+    else{
+      pickedFile = await imagePicker.getImage(source: ImageSource.camera);
+    }
+
+    setState(() {
+      if(pickedFile != null){
+        _image = File(pickedFile.path);
+        FirestoreCRUD.uploadManagerProfiePic(_image,manager);
+      }
+      else {
+        print('Error in file');
+      }
+    });
+  }
+
+  void showSelelectionSheet(BuildContext context) {
+
+    showModalBottomSheet(context: context,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(40.0)),
+        ),
+
+      builder: (context){
+      return AnimatedContainer(duration: Duration(milliseconds: 2000),
+          height: 150,
+          decoration: BoxDecoration(
+            gradient: gradient,
+
+      ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15,top: 30),
+          child: Row(
+
+
+            children: [
+              Column(
+
+                children: [
+                  Container(
+
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white
+                    ),
+                    child: IconButton(icon: KoukiconsCamera2(),
+
+
+
+
+                        onPressed:() {
+                          //showSelelectionSheet(context);
+                          Navigator.pop(context);
+                          getImage(false);
+                        }
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Text('CAMERA',
+                    style: TextStyle(color: Colors.white,
+                        letterSpacing: 1.5),
+                  )
+                ],
+              ),
+              SizedBox(width: 35,),
+              Column(
+                children: [
+                  Container(
+
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white
+                    ),
+                    child: IconButton(icon: KoukiconsFramePic(),
+
+
+
+
+                        onPressed:() {
+                          //showSelelectionSheet(context);
+                          Navigator.pop(context);
+                          getImage(true);
+
+                        }
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Text('GALLERY',
+                    style: TextStyle(color: Colors.white,
+
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+        );
+      }
+    );
+
   }
 }

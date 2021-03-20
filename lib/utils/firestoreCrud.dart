@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employeemanager/models/attendence.dart';
 import 'package:employeemanager/models/employees.dart';
@@ -8,6 +9,8 @@ import 'package:employeemanager/models/payments.dart';
 import 'package:employeemanager/screens/dashboard.dart';
 import 'package:employeemanager/utils/configs.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart' as Firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,7 +34,7 @@ class FirestoreCRUD{
     }
     manager.mob = "123450";
     manager.dateJoined = DateTime.now().toString();
-
+    manager.profilePicUrl = null;
     await FirebaseFirestore.instance.collection('managers').add(manager.toMap()).
     then((value) {
       manager.documentId = value.id;
@@ -436,6 +439,32 @@ class FirestoreCRUD{
       }
     }
     return paid;
+  }
+
+
+  static uploadManagerProfiePic(File _image,Manager manager) async{
+    try {
+      await Firebase_storage.FirebaseStorage.instance
+          .ref('Managers/${manager.email}')
+          .putFile(_image);
+    } on FirebaseException catch (e) {
+      print('Execption = ' + e.message);
+      // TODO
+    }
+
+    //Firebase_storage.UploadTask uploadTask = storage.putFile(_image);
+
+
+  }
+
+  static uploadFile(_image) async{
+
+
+
+
+
+
+
   }
 
 

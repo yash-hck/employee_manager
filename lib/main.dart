@@ -16,6 +16,7 @@ void main() async{
       Manager manager = Manager.blank();
       manager.documentId = jsonId;
       manager.email = prefs.getString('email');
+      manager.profilePicUrl = null;
       manager.name = prefs.getString('name');
       return runApp(MyApp(logs: true, manager: manager,));
     }
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+
       ),
       home: logs?DashBoard(incoming: manager,):LoginScreen(),
     );

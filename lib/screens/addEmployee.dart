@@ -284,6 +284,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       //print('scheme' + employee.wages.toString());
 
       print(employee.managerDocumentId);
+      employee.profilePicUrl = null;
       FirestoreCRUD.addEmployee(context, employee,manager).then((value){
         if(value){
           print('Successfully Registered Employee');

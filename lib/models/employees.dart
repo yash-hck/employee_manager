@@ -9,6 +9,7 @@ class Employee{
   String _dateJoined;
   String _email;
   String _mob;
+  String _profilePicUrl;
   String _document_id;
   double _wages;
   String _managerDocumentId;
@@ -19,6 +20,12 @@ class Employee{
   Employee( this._name,  this._dateJoined,
       this._email,this._wages , this._mob,this._searchKeys);
 
+
+  String get profilePicUrl => _profilePicUrl;
+
+  set profilePicUrl(String value) {
+    _profilePicUrl = value;
+  }
 
   List<String> get searchKeys => _searchKeys;
 
@@ -85,6 +92,7 @@ class Employee{
     map['mob'] = this._mob;
     map['searchKeys'] = this._searchKeys;
     //map['scheme'] = this._scheme;
+    map['profilePicUrl'] = this._profilePicUrl;
     //map['documentId'] = this._document_id;
     map['managerDocumentId'] = this._managerDocumentId;
 
@@ -96,6 +104,7 @@ class Employee{
     this._name = map['name'];
     this._wages = map['wages'];
     //this.employee_id = map['employee_id'];
+    this._profilePicUrl = map['profilePicUrl'];
     //this.dob = map['dob'];
     this._dateJoined =  map['dateJoined'];
     this._email = map['email'];
@@ -111,6 +120,7 @@ class Employee{
     this.email = data['email'];
     this._wages = data['wages'];
     this.mob = data['mob'];
+    this._profilePicUrl = data['profilePicUrl'];
     this.dateJoined = data['dateJoined'];
   }
 

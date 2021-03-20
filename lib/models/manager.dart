@@ -6,6 +6,7 @@ class Manager{
   String _name;
   String _email;
   //String _dob;
+  String _profilePicUrl;
   String _pass;
   String _dateJoined;
   String _mob;
@@ -14,8 +15,17 @@ class Manager{
 
   Manager.blank();
 
+
+
   Manager(this._name, this._email, this._pass, this._dateJoined,
       this._mob);
+
+
+  String get profilePicUrl => _profilePicUrl;
+
+  set profilePicUrl(String value) {
+    _profilePicUrl = value;
+  }
 
   String get documentId => _documentId;
 
@@ -66,6 +76,7 @@ class Manager{
     map['email'] = this._email;
     map['dateJoined'] = this._dateJoined;
     //map['dob'] = this._dob;
+     map['profilePicUrl'] = this._profilePicUrl;
     map['mob'] = this._mob;
     //map['managerId'] = this._managerId;
     //map['documentId'] = this._documentId;
@@ -76,6 +87,7 @@ class Manager{
 
   Manager.fromMapObject(Map<String ,dynamic> map){
     //this._managerId = map['managerId'];
+    this._profilePicUrl = map['profilePicUrl'];
     this._name = map['name'];
     this._email = map['email'];
     this._pass = map['pass'];
