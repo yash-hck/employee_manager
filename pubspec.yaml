@@ -68,6 +68,8 @@ flutter:
     - images/announ.png
     - images/atten.png
     - images/rup.png
+    - images/qrscan.png
+    - images/dues.png
 
   fonts:
     - family: Circular
