@@ -67,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             child: IconButton(icon: Icon(Icons.camera_alt,
                               color: Colors.white,
-
+                              
 
 
                             ),

@@ -182,12 +182,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Sign In',
+                          'MANAGER\nSign In',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w200,
+                              color: Colors.white
                           ),
                         ),
                         SizedBox(height: 30,),

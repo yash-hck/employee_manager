@@ -23,3 +23,6 @@ Color(0xFF398AE5),
 ],
 stops: [0.1, 0.4, 0.7, 0.9],
 );
+
+const String MANAGER_CODE = 'man';
+const String EMPLOYEE_CODE = 'emp';

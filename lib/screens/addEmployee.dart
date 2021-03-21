@@ -285,6 +285,7 @@ class _AddEmployeeState extends State<AddEmployee> {
 
       print(employee.managerDocumentId);
       employee.profilePicUrl = null;
+      employee.active = false;
       FirestoreCRUD.addEmployee(context, employee,manager).then((value){
         if(value){
           print('Successfully Registered Employee');

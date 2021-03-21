@@ -79,12 +79,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Sign Up',
+                          'MANAGER\nSign Up',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w200,
+                              color: Colors.white
                           ),
                         ),
                         SizedBox(height: 30,),

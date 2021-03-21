@@ -137,6 +137,7 @@ class FirestoreCRUD{
     prefs.setString('storedObject', json.encode(manager.toMap()));
     prefs.setString('email', manager.email);
     prefs.setString('name', manager.name);
+    prefs.setString('type', MANAGER_CODE);
 
   }
 

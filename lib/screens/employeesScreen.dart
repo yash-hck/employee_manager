@@ -9,6 +9,7 @@ import 'package:employeemanager/utils/configs.dart';
 import 'package:employeemanager/utils/firestoreCrud.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EmployeesScreen extends StatefulWidget {
@@ -88,6 +89,16 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                           Row(
                             children: [
                               CircleAvatar(
+                                child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Container(
+
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          
+                                      ),
+                                      child: employee.active?Icon(Icons.circle,color: Colors.greenAccent,size: 15,):null,
+                                    )),
                                 radius: 20,
                               ),
                               SizedBox(width: 20,),

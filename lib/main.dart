@@ -1,6 +1,10 @@
+import 'package:employeemanager/EmployeeScreens/employeeDashboard.dart';
+import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/models/manager.dart';
+import 'package:employeemanager/screens/chooseLoginRegister.dart';
 import 'package:employeemanager/screens/dashboard.dart';
 import 'package:employeemanager/screens/login.dart';
+import 'package:employeemanager/utils/configs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,17 +15,30 @@ void main() async{
   SharedPreferences.getInstance().then((prefs) {
     final String jsonId = prefs.getString('jsonId');
     final String storedObject = prefs.getString('storedObject');
+    final String code = prefs.get('type');
 
     if(storedObject != null && storedObject.isNotEmpty){
+      Employee employee = Employee.blank();
       Manager manager = Manager.blank();
-      manager.documentId = jsonId;
-      manager.email = prefs.getString('email');
-      manager.profilePicUrl = null;
-      manager.name = prefs.getString('name');
-      return runApp(MyApp(logs: true, manager: manager,));
+      if(code == MANAGER_CODE){
+        manager.documentId = jsonId;
+        manager.email = prefs.getString('email');
+        manager.profilePicUrl = null;
+        manager.name = prefs.getString('name');
+        return runApp(MyApp(logs: true, manager: manager,));
+      }
+      else{
+        employee.document_id = jsonId;
+        employee.email = prefs.getString('email');
+        employee.profilePicUrl = null;
+        employee.name = prefs.getString('name');
+        return runApp(MyApp(logs: true, employee: employee,));
+      }
+
+
     }
     else {
-      return runApp(MyApp(logs: false, manager: Manager.blank()));
+      return runApp(MyApp(logs: false, ));
     }
 
   });
@@ -35,8 +52,10 @@ class MyApp extends StatelessWidget {
 
   final bool logs;
   final Manager manager;
+  final String code;
+  final Employee employee;
 
-  const MyApp({ this.logs, this.manager});
+  const MyApp({ this.logs, this.manager,this.code, this.employee});
 
 
 
@@ -58,7 +77,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
 
       ),
-      home: logs?DashBoard(incoming: manager,):LoginScreen(),
+      home: logs?(manager!=null ? DashBoard(incoming: manager,): EmployeeDashboard()): ChooseMangerEmployee(),
     );
   }
 }

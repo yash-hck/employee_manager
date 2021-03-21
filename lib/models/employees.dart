@@ -11,6 +11,8 @@ class Employee{
   String _mob;
   String _profilePicUrl;
   String _document_id;
+  String _pass;
+  bool _active;
   double _wages;
   String _managerDocumentId;
   //String _scheme;
@@ -25,6 +27,18 @@ class Employee{
 
   set profilePicUrl(String value) {
     _profilePicUrl = value;
+  }
+
+  String get pass => _pass;
+
+  set pass(String value) {
+    _pass = value;
+  }
+
+  bool get active => _active;
+
+  set active(bool value) {
+    _active = value;
   }
 
   List<String> get searchKeys => _searchKeys;
@@ -94,22 +108,26 @@ class Employee{
     //map['scheme'] = this._scheme;
     map['profilePicUrl'] = this._profilePicUrl;
     //map['documentId'] = this._document_id;
+    map['active'] = this._active;
+    map['pass'] = this._pass;
     map['managerDocumentId'] = this._managerDocumentId;
 
     return map;
 
   }
 
-  Employee.fromMapObject(Map<String,dynamic> map){
+  Employee.fromMapObject(Map<dynamic,dynamic> map){
     this._name = map['name'];
+    this._pass = map['pass'];
     this._wages = map['wages'];
+    this._active = map['active'];
     //this.employee_id = map['employee_id'];
     this._profilePicUrl = map['profilePicUrl'];
     //this.dob = map['dob'];
     this._dateJoined =  map['dateJoined'];
     this._email = map['email'];
     this._mob = map['mob'];
-    this._searchKeys = map['searchKeys'];
+    //this._searchKeys = map['searchKeys'];
     //this._scheme = map['scheme'];
     //this._document_id = map['documentId'];
     //this._managerDocumentId = map['managerDocumentId'];
@@ -119,7 +137,9 @@ class Employee{
     this.name = data['name'];
     this.email = data['email'];
     this._wages = data['wages'];
+    this._pass = data['pass'];
     this.mob = data['mob'];
+    this._active = data['active'];
     this._profilePicUrl = data['profilePicUrl'];
     this.dateJoined = data['dateJoined'];
   }
