@@ -6,6 +6,7 @@ import 'package:employeemanager/screens/employeesScreen.dart';
 import 'package:employeemanager/screens/login.dart';
 import 'package:employeemanager/screens/paymentsScreen.dart';
 import 'package:employeemanager/screens/profileScreen.dart';
+import 'package:employeemanager/screens/qrCodeScreen.dart';
 import 'package:employeemanager/screens/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -60,7 +61,16 @@ class DrawerScreen extends StatelessWidget {
             child: ListView(
 
               children: [
-
+                ListTile(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => QrGenerator(manager: manager,)));
+                  },
+                  leading: Icon(Icons.qr_code,color: Colors.white,),
+                  title: Text('Generate QR',
+                    style: TextStyle(
+                        color: Colors.white
+                    ),),
+                ),
 
                 ListTile(
                   onTap: (){

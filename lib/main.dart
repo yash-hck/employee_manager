@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
 
       ),
-      home: logs?(manager!=null ? DashBoard(incoming: manager,): EmployeeDashboard()): ChooseMangerEmployee(),
+      home: logs?(manager!=null ? DashBoard(incoming: manager,): EmployeeDashboard(employee: employee,)): ChooseMangerEmployee(),
     );
   }
 }

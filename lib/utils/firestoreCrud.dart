@@ -101,6 +101,7 @@ class FirestoreCRUD{
       tmp += employee.name[i];
       keys.add(tmp);
     }
+    employee.pass = employee.email;
     employee.searchKeys = keys;
     employee.dateJoined = DateTime.now().toString();
     await FirebaseFirestore.instance
@@ -222,10 +223,7 @@ class FirestoreCRUD{
     .doc(id)
     .collection(ATTENDENCE_COLLECTION)
     .add(attendence.toMap());
-
     return true;
-
-
   }
 
   static Future<double> calculateDues(Employee employee) async{
@@ -236,7 +234,7 @@ class FirestoreCRUD{
 
   }
 
-  static Future<double> getAllPays(Employee employee , Manager manager)async{
+  static Future<double> getAllPays(Employee employee , Manager manager) async {
     FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
         .doc(manager.documentId)
         .collection('payments');

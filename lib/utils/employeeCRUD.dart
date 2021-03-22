@@ -42,5 +42,10 @@ class EmployeeCRUD{
 
   }
 
+  static Future<double> getPayments(Employee employee) async{
+
+
+
+  }
 
 }

@@ -5,8 +5,10 @@ import 'package:employeemanager/EmployeeScreens/profileEmployee.dart';
 import 'package:employeemanager/EmployeeScreens/qrScanner.dart';
 import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/models/manager.dart';
+import 'package:employeemanager/screens/chooseLoginRegister.dart';
 import 'package:employeemanager/utils/configs.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmployeeDashboard extends StatefulWidget {
 
@@ -45,16 +47,19 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.arrow_back_ios),
+                    CircleAvatar(
+                    backgroundImage: employee.profilePicUrl==null? AssetImage('images/abd.jpg') : NetworkImage(employee.profilePicUrl),
+                  ),
+
                     Text('DASHBOARD',
                       style: TextStyle(
                           fontSize: 19
                       ),
 
                     ),
-                    CircleAvatar(
-                      backgroundImage: employee.profilePicUrl==null? AssetImage('images/abd.jpg') : NetworkImage(employee.profilePicUrl),
-                    ),
+                    IconButton(icon: Icon(Icons.logout), onPressed: (){removeData();
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ChooseMangerEmployee()),(Route<dynamic> route) => false);
+                    }),
                   ],
                 ),
               ),
@@ -122,6 +127,13 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
           ),
         ));
   }
+
+  void removeData() async{
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+
+  }
 }
 
 class Tile extends StatelessWidget {
@@ -136,7 +148,7 @@ class Tile extends StatelessWidget {
 
   Tile({this.imagePath, this.index, this.title,this.employee}){
     incoming = employee;
-    screens = [QrScanner(employee: employee,), EmployeePayments(employee: employee,) ,EmployeeDues(employee: employee,),EmployeeAttendence(employee: employee,), ProfileEmplyee(employee: employee,)];
+    screens = [QrScanner(employee: employee,), EmployeePayments(employee: employee,) ,EmployeeDues(employee: employee,),EmployeeAttendence(employee: employee,), ProfileEmpolyee(employee: employee,)];
   }
 
 

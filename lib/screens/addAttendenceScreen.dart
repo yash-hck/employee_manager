@@ -263,6 +263,7 @@ class _AddAttendenceState extends State<AddAttendence> {
             sendEmail(result);
             setState(() {
               dateController.text = 'Today';
+              recipentsController.clear();
               isLoading = false;
 
 
