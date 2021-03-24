@@ -25,7 +25,7 @@ class EmployeeCRUD{
           employee.document_id = snapshot.docs[0].id;
           storeData(employee);
 
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeDashboard()),(Route<dynamic> route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeDashboard(employee: employee,)),(Route<dynamic> route) => false);
     });
     return true;
   }

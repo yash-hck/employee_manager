@@ -87,10 +87,11 @@ class _EmployeePaymentsState extends State<EmployeePayments> {
                             ),
                             SizedBox(width: 20,),
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              //crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+
                                 Text(
-                                  data['amount'],
+                                  data['amount'].round().toString(),
                                   style: TextStyle(
 
                                       fontSize: 20,
