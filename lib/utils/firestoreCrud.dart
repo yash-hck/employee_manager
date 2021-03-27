@@ -197,7 +197,7 @@ class FirestoreCRUD{
     
   }
 
-  static Future<bool> addAttendenceList(Employee employee,Manager manager,Attendence attendence) async {
+  static Future<bool> addAttendenceList(Employee employee,Attendence attendence) async {
 
     print(employee.email);
     int len = 0;

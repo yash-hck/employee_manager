@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:barcode_scan_fix/barcode_scan.dart';
+import 'package:employeemanager/EmployeeScreens/employeeAttendence.dart';
 import 'package:employeemanager/models/employees.dart';
+import 'package:employeemanager/utils/employeeCRUD.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -57,7 +59,12 @@ class _QrScannerState extends State<QrScanner> {
             FlatButton(
               padding: EdgeInsets.all(15),
               onPressed: () async {
+
+
                 String codeSanner = await BarcodeScanner.scan();    //barcode scnner
+                if(codeSanner!=null && codeSanner !=''){
+                  EmployeeCRUD.MarkAndChangeStatus(employee, codeSanner);
+                }
                 setState(() {
                   qrCodeResult = codeSanner;
                 });

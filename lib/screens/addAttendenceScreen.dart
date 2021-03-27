@@ -257,7 +257,7 @@ class _AddAttendenceState extends State<AddAttendence> {
         attendence.fullDay = fullTime;
         attendence.date = selectedDate.toString();
 
-        FirestoreCRUD.addAttendenceList(result,manager,attendence).then((bool val){
+        FirestoreCRUD.addAttendenceList(result,attendence).then((bool val){
           if(val == true){
             print('Success');
             sendEmail(result);
