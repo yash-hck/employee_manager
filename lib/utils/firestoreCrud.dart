@@ -183,7 +183,7 @@ class FirestoreCRUD{
       await FirebaseFirestore.instance
           .collection(EMPLOYEES_COLLECTION)
           .doc(id)
-          .collection('payments')
+          .collection(PAYMENTS_COLLECTION)
           .add(payments.toMap());
       }
       catch(e){
@@ -237,7 +237,7 @@ class FirestoreCRUD{
   static Future<double> getAllPays(Employee employee , Manager manager) async {
     FirebaseFirestore.instance.collection(MANAGER_COLLECTION)
         .doc(manager.documentId)
-        .collection('payments');
+        .collection(PAYMENTS_COLLECTION);
   }
 
   static Future<double> getWorkAmt(Employee employee,) async {
@@ -288,7 +288,7 @@ class FirestoreCRUD{
 
 
     await FirebaseFirestore.instance.collection(EMPLOYEES_COLLECTION)
-        .doc(id).collection('payments')
+        .doc(id).collection(PAYMENTS_COLLECTION)
         .get()
         .then((QuerySnapshot querySnapshot){
           querySnapshot.docs.forEach((element) {
@@ -336,7 +336,7 @@ class FirestoreCRUD{
       await FirebaseFirestore.instance
           .collection(EMPLOYEES_COLLECTION)
           .doc(id)
-          .collection('payments')
+          .collection(PAYMENTS_COLLECTION)
           .get()
           .then((value){
             value.docs.forEach((element) {

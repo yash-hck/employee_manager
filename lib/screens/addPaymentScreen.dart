@@ -2,6 +2,7 @@ import 'package:employeemanager/models/employees.dart';
 import 'package:employeemanager/models/manager.dart';
 import 'package:employeemanager/models/payments.dart';
 import 'package:employeemanager/screens/chooseEmployeeScreen.dart';
+import 'package:employeemanager/utils/configs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -226,7 +227,7 @@ class _AddPaymentsState extends State<AddPayments> {
 
 
     payments.method = selectedButton == 1?'Bank':'Cash';
-    payments.date = DateTime.now().toString();
+    payments.date = DateFormat(MY_DATE_FORMAT).format(DateTime.now()).toString();
     payments.amount = double.parse(amountController.text);
 
     setState(() {

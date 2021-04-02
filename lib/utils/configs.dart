@@ -15,6 +15,9 @@ List<String> empDashImages = ['images/qrscan.png','images/rup.png', 'images/dues
 const String MANAGER_COLLECTION = 'managers';
 const String EMPLOYEES_COLLECTION = 'employees';
 const String ATTENDENCE_COLLECTION = 'attendence';
+const String MY_DATE_FORMAT = 'dd/MM/yyyy';
+const String PAYMENTS_COLLECTION = 'payments';
+
 
 var gradient =  LinearGradient(
 begin: Alignment.topCenter,

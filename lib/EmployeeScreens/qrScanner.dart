@@ -61,9 +61,17 @@ class _QrScannerState extends State<QrScanner> {
               onPressed: () async {
 
 
-                String codeSanner = await BarcodeScanner.scan();    //barcode scnner
+                String codeSanner = await BarcodeScanner.scan();int code ;    //barcode scnner
                 if(codeSanner!=null && codeSanner !=''){
-                  EmployeeCRUD.MarkAndChangeStatus(employee, codeSanner);
+                 code = await EmployeeCRUD.MarkAndChangeStatus(employee, codeSanner);
+                }
+                switch(code){
+                  case 101 : qrCodeResult = 'Attendence already marked ,To change consult to your manager';
+                  break;
+                  case 200: qrCodeResult = 'Successfully Created CheckedOut Your Attendence has been Marked';
+                  break;
+                  case 201: qrCodeResult = 'Created check in scan when u leave to mark your attendence';
+
                 }
                 setState(() {
                   qrCodeResult = codeSanner;
